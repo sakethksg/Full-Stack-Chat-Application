@@ -213,7 +213,7 @@ This project is evolving, and here are a few exciting things on the horizon:
 
 ![logout](/frontend/public/logout.png)
 
-![Login](/frontend/public/login.png)
+
 
 
 
