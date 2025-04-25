@@ -4,8 +4,10 @@ metadata:
   name: backend
   namespace: chat-app
 spec:
-  selector:
-    app: backend
+  type: NodePort
   ports:
   - port: 5001
     targetPort: 5001
+    nodePort: 30081
+  selector:
+    app: backend
