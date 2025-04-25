@@ -1,9 +1,22 @@
 services:
   - type: web
-    name: chat-app
+    name: chat-app-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: web
+    name: chat-app-backend
     env: node
-    buildCommand: chmod +x ./build.sh && ./build.sh
-    startCommand: npm start
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
     envVars:
       - key: NODE_ENV
         value: production
@@ -11,41 +24,16 @@ services:
         value: 10000
       - key: JWT_SECRET
         value: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE3MzI2NTMxMDcsImV4cCI6MTc2NDE4OTEwNywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.qE3lxrcV9TM3nujRqJVeCHPd_4WFPO9eVZj8A_kjabI
+      - key: MONGODB_URI
+        value: mongodb://mongoadmin:secret@mongodb:27017/dbname?authSource=admin
       - key: NODE_VERSION
         value: 18
-      - key: MONGODB_URI
-        generateValue: false
-        sync: false
-
-  - type: redis
-    name: chat-cache
-    ipAllowList:
-      - source: 0.0.0.0/0
-        description: everywhere
-    plan: free
 
   - type: pserv
-    name: mongo
+    name: mongodb 
     env: docker
-    repo: https://github.com/render-examples/mongodb.git
-    envVars:
-      - key: MONGO_INITDB_ROOT_USERNAME
-        value: mongo
-      - key: MONGO_INITDB_ROOT_PASSWORD
-        generateValue: true
+    dockerfilePath: ./mongodb.Dockerfile
     disk:
-      name: data
+      name: mongodb-data
       mountPath: /data/db
-      sizeGB: 10
-    envVarGroups:
-      - name: mongo-env
-        envVars:
-          - key: MONGO_HOST
-            value: mongo
-          - key: MONGO_PORT
-            value: 27017
-          - key: MONGO_PASSWORD
-            fromService:
-              name: mongo
-              type: pserv
-              envVarKey: MONGO_INITDB_ROOT_PASSWORD 
+      sizeGB: 1 
