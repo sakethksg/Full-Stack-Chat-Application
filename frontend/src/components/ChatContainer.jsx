@@ -160,7 +160,7 @@ const ChatContainer = () => {
                       ref={isLastMessage ? messageEndRef : null}
                     >
                       <div className="chat-image avatar">
-                        <div className={`size-10 rounded-full border ${!showAvatar && 'opacity-0'}`}>
+                        <div className={`size-10 rounded-full overflow-hidden border-2 border-base-200 bg-base-100 flex items-center justify-center ${!showAvatar && 'opacity-0'}`}>
                           <img
                             src={
                               isAuthUserMessage
@@ -168,7 +168,10 @@ const ChatContainer = () => {
                                 : selectedUser.profilePic || "/avatar.png"
                             }
                             alt="profile pic"
-                            className="transition-transform hover:scale-105"
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              e.target.src = "/avatar.png";
+                            }}
                           />
                         </div>
                       </div>

@@ -24,11 +24,14 @@ const ChatHeader = () => {
           
           {/* Avatar */}
           <div className="avatar">
-            <div className="size-10 rounded-full relative border-2 border-base-300 shadow-sm hover:shadow-md transition-shadow">
+            <div className="size-10 rounded-full relative border-2 border-base-300 shadow-sm hover:shadow-md transition-shadow overflow-hidden bg-base-100 flex items-center justify-center">
               <img 
                 src={selectedUser.profilePic || "/avatar.png"} 
                 alt={selectedUser.fullName}
-                className="hover:scale-105 transition-transform duration-300" 
+                className="h-full w-full object-cover"
+                onError={(e) => {
+                  e.target.src = "/avatar.png";
+                }}
               />
               {isOnline && (
                 <span className="absolute bottom-0 right-0 size-3 bg-success rounded-full border-2 border-base-100"></span>

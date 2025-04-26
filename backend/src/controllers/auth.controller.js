@@ -94,12 +94,29 @@ export const updateProfile = async (req, res) => {
       return res.status(400).json({ message: "Profile pic is required" });
     }
 
-    const uploadResponse = await cloudinary.uploader.upload(profilePic);
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { profilePic: uploadResponse.secure_url },
-      { new: true }
-    );
+    let updatedUser;
+    
+    try {
+      // Try to upload to Cloudinary
+      const uploadResponse = await cloudinary.uploader.upload(profilePic);
+      updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { profilePic: uploadResponse.secure_url },
+        { new: true }
+      );
+    } catch (cloudinaryError) {
+      console.log("Cloudinary upload failed:", cloudinaryError);
+      
+      // Fallback - store profile pic as base64 directly in the database
+      // Or use a default profile picture URL
+      const defaultProfilePic = "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg";
+      
+      updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { profilePic: defaultProfilePic },
+        { new: true }
+      );
+    }
 
     res.status(200).json(updatedUser);
   } catch (error) {

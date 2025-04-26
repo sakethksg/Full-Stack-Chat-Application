@@ -34,18 +34,26 @@ const ProfilePage = () => {
 
           <div className="flex flex-col items-center gap-4">
             <div className="relative">
-              <img
-                src={selectedImg || authUser.profilePic || "/avatar.png"}
-                alt="Profile"
-                className="size-32 rounded-full object-cover border-4 "
-              />
+              <div className="size-32 rounded-full overflow-hidden border-4 border-base-200 bg-base-100 flex items-center justify-center shadow-md">
+                <img
+                  src={selectedImg || authUser.profilePic || "/avatar.png"}
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                  style={{ 
+                    objectFit: "cover"
+                  }}
+                  onError={(e) => {
+                    e.target.src = "/avatar.png";
+                  }}
+                />
+              </div>
               <label
                 htmlFor="avatar-upload"
                 className={`
                   absolute bottom-0 right-0 
                   bg-base-content hover:scale-105
                   p-2 rounded-full cursor-pointer 
-                  transition-all duration-200
+                  transition-all duration-200 shadow-lg
                   ${isUpdatingProfile ? "animate-pulse pointer-events-none" : ""}
                 `}
               >

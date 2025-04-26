@@ -54,11 +54,16 @@ const Sidebar = () => {
             `}
           >
             <div className="relative mx-auto lg:mx-0">
-              <img
-                src={user.profilePic || "/avatar.png"}
-                alt={user.name}
-                className="size-12 object-cover rounded-full"
-              />
+              <div className="size-12 rounded-full overflow-hidden border-2 border-base-200 bg-base-100 flex items-center justify-center">
+                <img
+                  src={user.profilePic || "/avatar.png"}
+                  alt={user.name}
+                  className="h-full w-full object-cover"
+                  onError={(e) => {
+                    e.target.src = "/avatar.png";
+                  }}
+                />
+              </div>
               {onlineUsers.includes(user._id) && (
                 <span
                   className="absolute bottom-0 right-0 size-3 bg-green-500 
