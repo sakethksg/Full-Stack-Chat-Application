@@ -22,7 +22,7 @@ app.use(express.json({ limit: "10mb" })); // Increase the limit to 10MB or as ne
 app.use(express.urlencoded({ limit: "10mb", extended: true })); // For URL-encoded data
 app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173", "http://localhost", "http://localhost:80"],
   credentials: true, 
 }));
 
