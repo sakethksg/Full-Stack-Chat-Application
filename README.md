@@ -1,198 +1,464 @@
-# Real-Time Chat Application
+# 💬 Full-Stack Real-Time Chat Application
+
+A modern, scalable real-time chat application built with the MERN stack, featuring WebSocket communication, JWT authentication, and cloud-ready deployment with Docker and Kubernetes.
 
 ## 📝 Introduction
 
-This project provides a real-time chat experience that's both scalable and secure. With a focus on modern technologies, we're building an application that's easy to use and maintain.
+This full-stack chat application delivers a seamless real-time messaging experience with a focus on scalability, security, and modern web technologies. Built with React, Node.js, MongoDB, and Socket.io, it provides instant messaging capabilities with user authentication, profile management, and online presence tracking.
 
 ## ✨ Features
 
-* **Real-time Messaging**: Send and receive messages instantly using Socket.io 
-* **User Authentication**: Securely manage user access with JWT 
-* **Scalable Architecture**: Built to handle large volumes of traffic and data 
-* **Modern UI Design**: A user-friendly interface crafted with React and TailwindCSS 
-* **Profile Management**: Users can upload and update their profile pictures 
-* **Online Status**: View real-time online/offline status of users 
+* **Real-time Messaging**: Instant message delivery using Socket.io WebSockets
+* **User Authentication**: Secure JWT-based authentication with HTTP-only cookies
+* **Profile Management**: Upload and update profile pictures using Cloudinary
+* **Online Status**: Real-time online/offline status indicators
+* **Message History**: Persistent message storage with MongoDB
+* **Responsive UI**: Mobile-friendly design with TailwindCSS and DaisyUI
+* **Theme Support**: Multiple theme options for personalized experience
+* **Typing Indicators**: See when other users are typing
+* **Scalable Architecture**: Containerized with Docker and orchestrated with Kubernetes
 
 ## 🛠️ Tech Stack
 
-* **Backend:** Node.js, Express, MongoDB, Socket.io
-* **Frontend:** React, TailwindCSS
-* **Containerization:** Docker
-* **Orchestration:** Kubernetes (planned)
-* **Web Server:** Nginx
-* **State Management:** Zustand
-* **Authentication:** JWT
-* **Styling Components:** DaisyUI
+### Backend
+* **Node.js** & **Express.js** - Server framework
+* **MongoDB** - Database
+* **Socket.io** - Real-time bidirectional communication
+* **JWT** - Authentication
+* **Cloudinary** - Media storage
+* **bcryptjs** - Password hashing
+
+### Frontend
+* **React** - UI library
+* **Vite** - Build tool
+* **TailwindCSS** - Styling
+* **DaisyUI** - Component library
+* **Zustand** - State management
+* **Axios** - HTTP client
+* **React Router** - Navigation
+
+### DevOps & Infrastructure
+* **Docker** - Containerization
+* **Docker Compose** - Multi-container orchestration
+* **Kubernetes** - Container orchestration
+* **Nginx** - Reverse proxy & static file serving
 
 ## 🔧 Prerequisites
 
-* **Node.js** (v14 or higher)
-* **Docker** (for containerizing the app)
+Before you begin, ensure you have the following installed:
+
+* **Node.js** (v18 or higher)
+* **Docker** & **Docker Compose** (for containerization)
+* **MongoDB** (if running locally without Docker)
 * **Git** (to clone the repository)
+* **Kubernetes** (kubectl and a cluster - optional, for K8s deployment)
 
-## 📝 Setup .env File
+## 🚀 Quick Start
 
-1. Navigate to the `backend` directory:
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/sakethksg/ChatHub.git
+cd ChatHub
+```
+
+### 2. Environment Configuration
+
+Create a `.env` file in the `backend` directory:
+
 ```bash
 cd backend
 ```
-2. Create a `.env` file and add the following content (modify the values as needed):
+
+Create `.env` with the following variables:
+
 ```env
-MONGODB_URI=mongodb://mongoadmin:secret@mongodb:27017/dbname?authSource=admin
-JWT_SECRET=your_jwt_secret_key
+# MongoDB Configuration
+MONGODB_URI=mongodb://mongoadmin:secret@mongodb:27017/chatapp?authSource=admin
+
+# JWT Configuration
+JWT_SECRET=your_super_secure_jwt_secret_key_here
+
+# Server Configuration
 PORT=5001
-```
-> **Note:** Replace `your_jwt_secret_key` with a strong secret key of your choice.
+NODE_ENV=production
 
-### Clone the Repository
+# Cloudinary Configuration (for image uploads)
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+```
+
+> **⚠️ Important:** Replace the placeholder values with your actual credentials. Generate a strong JWT secret using: `openssl rand -base64 32`
+
+### 3. Run with Docker Compose (Recommended)
+
+The easiest way to run the entire application:
 
 ```bash
-git clone https://github.com/iemafzalhassan/full-stack_chatApp.git
-```
-
-## 🏗️ Build and Run the Application"
-
-Follow these steps to build and run the application:
-
-1. Build & Run the Containers:
-
-```bash
-cd full-stack_chatApp
-```
-```bash
+# From the project root directory
 docker-compose up -d --build
 ```
 
-2. Access the application in your browser:
+This will start:
+- MongoDB database on port 27017
+- Backend API on port 5001
+- Frontend application on port 80
 
-```
-http://localhost
-```
----
+**Access the application:** `http://localhost`
 
-## 🛠️ Getting Started
+**Backend API:** `http://localhost:5001`
 
-Follow these simple steps to get the project up and running on your local Host using docker.
+### 4. Verify Deployment
 
+Check container status:
 ```bash
-git clone https://github.com/iemafzalhassan/full-stack_chatApp.git
+docker-compose ps
 ```
 
-```bash
-cd full-stack_chatApp
-```
-## Create a Docker network:
-
-```bash
-docker network create full-stack
-```
-
-## 🛠️ Building the Frontend
-
-```bash
-cd frontend
-```
-
-```bash
-docker build -t full-stack_frontend .
-```
-
-### Run the Frontend container:
-
-```bash
-docker run -d --network=full-stack  -p 5173:5173 --name frontend full-stack_frontend:latest
-```
-#### The frontend will now be accessible on port 5173.
-
-
-### Run the MongoDB Container:
-
-```bash
-docker run -d -p 27017:27017 --name mongo mongo:latest
-```
----
-
-## 🛠️ Building the Backend
-
-```bash
-cd backend
-```
-
-### Build the Backend image:
-
-```bash
-docker build -t full-stack_backend .
-```
-
-### Run the Backend container:
-
-```bash
-docker run -d --network=full-stack --add-host=host.docker.internal:host-gateway -p 5001:5001 --env-file .env full-stack_backend
-
-```
-#### This will build and run the backend container, exposing the backendAPI on port 5001.
-
-`Backend API: http://localhost:5001`
-
-### To Verify the conncetion between backend and databse:
+View logs:
 ```bash
 docker-compose logs -f
 ```
 
-### Once the backend and frontend containers are running, you can access the application in your browser:
+Stop the application:
+```bash
+docker-compose down
+```
 
-`Frontend: http://localhost`
+## 🐳 Docker Deployment (Manual)
 
+If you prefer to build and run containers individually:
 
-You can now interact with the real-time chat app and start messaging!
+### Step 1: Create Docker Network
 
----
+```bash
+docker network create chatapp-network
+```
 
+### Step 2: Run MongoDB
 
+```bash
+docker build -f mongodb.Dockerfile -t chatapp-mongo .
+docker run -d \
+  --name mongodb \
+  --network chatapp-network \
+  -p 27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=mongoadmin \
+  -e MONGO_INITDB_ROOT_PASSWORD=secret \
+  chatapp-mongo
+```
 
-### 🤝 Contributing
+### Step 3: Build and Run Backend
 
+```bash
+cd backend
+docker build -t chatapp-backend .
+docker run -d \
+  --name backend \
+  --network chatapp-network \
+  -p 5001:5001 \
+  --env-file .env \
+  chatapp-backend
+cd ..
+```
 
-We welcome contributions from DevOps & Developer of all skill levels! Here's how you can contribute:
+### Step 4: Build and Run Frontend
 
-**Report bugs:** If you encounter any bugs or issues, please open an issue with detailed information.
-**Suggest features:** Have an idea for a new feature? Open an issue to discuss it with the community.
-**Submit pull requests:** If you have a fix or a feature you'd like to contribute, submit a pull request. Ensure your changes pass any linting or tests, if applicable.
+```bash
+cd frontend
+docker build -t chatapp-frontend .
+docker run -d \
+  --name frontend \
+  --network chatapp-network \
+  -p 80:80 \
+  chatapp-frontend
+cd ..
+```
 
-### 🌐 Join the Community
+## ☸️ Kubernetes Deployment
 
-We invite you to join our community of developers and contributors. Let's work together to build an amazing real-time chat application!
+Deploy the application to a Kubernetes cluster:
 
-* **Star this repository** to show your support
-* **Fork this repository** to contribute to the project
-* **Open an issue** to report bugs or suggest features
-* **Submit a pull request** to contribute code changes
+### Step 1: Create Namespace
 
-## 🔮 Future Plans
+```bash
+kubectl apply -f k8s/namespace.yml
+```
 
+### Step 2: Configure Secrets
 
-This project is evolving, and here are a few exciting things on the horizon:
+Edit `k8s/secrets.yml` with your base64-encoded credentials:
 
-* [ ] **CI/CD Pipelines:** Implement Continuous Integration and Continuous Deployment pipelines to automate testing and deployment.
-* [ ] **Kubernetes (K8s):** Add Kubernetes manifests for container orchestration to deploy the app on cloud platforms like AWS, GCP, or Azure.
-* [ ] **Feature Expansion:** Add more features like group chats, media sharing, and user status updates.
-* **Stay tuned for updates as we continue to improve and expand this project!**
+```bash
+echo -n "your_jwt_secret" | base64
+echo -n "mongodb://mongoadmin:secret@mongodb:27017/chatapp?authSource=admin" | base64
+```
 
----
+Apply secrets:
+```bash
+kubectl apply -f k8s/secrets.yml
+```
 
-## 📚 Project Snapshots:
+### Step 3: Deploy MongoDB
 
+```bash
+kubectl apply -f k8s/mongodb-pv.yml
+kubectl apply -f k8s/mongodb-pvc.yml
+kubectl apply -f k8s/mongodb-deployment.yml
+kubectl apply -f k8s/mongodb-service.yml
+```
+
+### Step 4: Deploy Backend
+
+```bash
+kubectl apply -f k8s/backend-deployment.yml
+kubectl apply -f k8s/backend-service.yml
+```
+
+### Step 5: Deploy Frontend
+
+```bash
+kubectl apply -f k8s/frontend-deployment.yml
+kubectl apply -f k8s/frontend-service.yml
+```
+
+### Step 6: Configure Ingress
+
+```bash
+kubectl apply -f k8s/ingress.yml
+```
+
+### Verify Kubernetes Deployment
+
+```bash
+# Check pods
+kubectl get pods -n chatapp
+
+# Check services
+kubectl get services -n chatapp
+
+# Check ingress
+kubectl get ingress -n chatapp
+
+# View logs
+kubectl logs -f <pod-name> -n chatapp
+```
+
+## 💻 Local Development (Without Docker)
+
+### Backend Setup
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`
+
+## 📁 Project Structure
+
+```
+ChatHub/
+├── backend/                 # Backend API
+│   ├── src/
+│   │   ├── controllers/     # Route controllers
+│   │   ├── models/          # MongoDB models
+│   │   ├── routes/          # API routes
+│   │   ├── middleware/      # Authentication middleware
+│   │   ├── lib/             # Utilities (socket, db, cloudinary)
+│   │   └── seeds/           # Database seeders
+│   ├── Dockerfile
+│   └── package.json
+├── frontend/                # Frontend React app
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   ├── pages/           # Page components
+│   │   ├── store/           # Zustand stores
+│   │   ├── lib/             # Utilities
+│   │   └── constants/       # Constants
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   └── package.json
+├── k8s/                     # Kubernetes manifests
+│   ├── namespace.yml
+│   ├── secrets.yml
+│   ├── mongodb-*.yml
+│   ├── backend-*.yml
+│   ├── frontend-*.yml
+│   └── ingress.yml
+├── docker-compose.yml       # Docker Compose configuration
+└── README.md
+```
+
+## 🎯 API Endpoints
+
+### Authentication
+- `POST /api/auth/signup` - Register a new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/logout` - Logout user
+- `GET /api/auth/check` - Check authentication status
+- `PUT /api/auth/update-profile` - Update user profile
+
+### Messages
+- `GET /api/messages/users` - Get all users
+- `GET /api/messages/:id` - Get messages with a specific user
+- `POST /api/messages/send/:id` - Send a message to a user
+
+## 🔌 WebSocket Events
+
+### Client → Server
+- `setup` - Initialize socket connection for user
+- `typing` - User started typing
+- `stop-typing` - User stopped typing
+
+### Server → Client
+- `online-users` - List of currently online users
+- `new-message` - New message received
+- `user-connected` - User came online
+- `user-disconnected` - User went offline
+
+## 🧪 Testing
+
+### Seed Database with Test Users
+
+```bash
+cd backend
+npm run seed
+```
+
+This creates test users you can use to test the chat functionality.
+
+## 🐛 Troubleshooting
+
+### Connection Issues
+
+**MongoDB Connection Error:**
+```bash
+# Check MongoDB container is running
+docker ps | grep mongodb
+
+# View MongoDB logs
+docker logs mongodb
+```
+
+**Backend Not Starting:**
+```bash
+# Check environment variables
+cat backend/.env
+
+# View backend logs
+docker logs backend
+```
+
+**Frontend Build Errors:**
+```bash
+# Clear node_modules and rebuild
+cd frontend
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Port Conflicts
+
+If ports 80, 5001, or 27017 are already in use:
+
+```bash
+# Check what's using the port
+sudo lsof -i :80
+sudo lsof -i :5001
+sudo lsof -i :27017
+
+# Kill the process or change the port in docker-compose.yml
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/AmazingFeature`
+3. **Commit your changes**: `git commit -m 'Add some AmazingFeature'`
+4. **Push to the branch**: `git push origin feature/AmazingFeature`
+5. **Open a Pull Request**
+
+### Contribution Guidelines
+
+- Write clear, concise commit messages
+- Follow the existing code style
+- Add tests for new features
+- Update documentation as needed
+- Ensure all tests pass before submitting PR
+
+### Areas for Contribution
+
+- 🐛 Bug fixes
+- ✨ New features
+- 📝 Documentation improvements
+- 🎨 UI/UX enhancements
+- ⚡ Performance optimizations
+- 🧪 Test coverage
+
+## 🔮 Roadmap & Future Enhancements
+
+- [ ] **Group Chat**: Multi-user chat rooms
+- [ ] **File Sharing**: Send images, videos, and documents
+- [ ] **Voice/Video Calls**: WebRTC integration
+- [ ] **Message Reactions**: Emoji reactions to messages
+- [ ] **Read Receipts**: See when messages are read
+- [ ] **Search Functionality**: Search through message history
+- [ ] **Push Notifications**: Desktop and mobile notifications
+- [ ] **Message Encryption**: End-to-end encryption
+- [ ] **User Blocking**: Block/unblock users
+- [ ] **CI/CD Pipeline**: Automated testing and deployment
+- [ ] **Monitoring**: Prometheus and Grafana integration
+- [ ] **Load Balancing**: Redis adapter for Socket.io scaling
+
+## 📸 Screenshots
+
+### Chat Interface
+![Chat Interface](frontend/public/chat.png)
+
+### Settings Page
 ![Settings](frontend/public/settings.png)
 
-![chat](frontend/public/chat.png)
+### Logout Confirmation
+![Logout](frontend/public/logout.png)
 
-![logout](/frontend/public/logout.png)
+## 📄 License
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 🙏 Acknowledgments
 
+- Socket.io for real-time communication
+- MongoDB for flexible data storage
+- Cloudinary for media management
+- The open-source community for amazing tools and libraries
 
+## 👤 Author
 
-## 📜 License
+**Saketh**
+- GitHub: [@sakethksg](https://github.com/sakethksg)
+- Repository: [ChatHub](https://github.com/sakethksg/ChatHub)
 
+---
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+## 💡 Support
+
+If you find this project helpful, please give it a ⭐️!
+
+For questions or issues, please open an issue on GitHub.
+
+---
+
+**Built with ❤️ using React, Node.js, MongoDB, and Socket.io**
